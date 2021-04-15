@@ -42,14 +42,25 @@ namespace ChatServerApp
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.WriteLine("Conexion Establecida!");
-                        Console.WriteLine("S: Hola Mundo Cliente!");
-                        /*se le manda un hola mundo a cliente que se conecta
-                         y se cierra
-                         y va a hacer la repeticion infinita*/
-                        servidor.Escribir("Hola Mundo Cliente!");
-                        /*Leer mensaje desde el cliente*/
-                        String mensaje = servidor.Leer();
-                        Console.WriteLine("C:{0}", mensaje);
+                        //Protocolo de comunicacion
+                        /*Se repite el ciclo mientras el mensaje no sea chao*/
+                        string mensaje = "";
+                        while (mensaje.ToLower() != "chao")
+                        {
+                            //leo el mensaje del cliente
+                            mensaje = servidor.Leer();
+                            Console.WriteLine("C:{0}", mensaje);
+                            if (mensaje.ToLower() != "chao")
+                            {
+                                //El cliente espera una respuesta
+                                Console.WriteLine("Digame lo que quiere decir");
+                                /*Se lee nuevamente un mensaje del cliente
+                                 directamente a la variable mensaje*/
+                                mensaje = Console.ReadLine().Trim();
+                                Console.WriteLine("S:{0}", mensaje);
+                                servidor.Escribir(mensaje);
+                            }
+                        }
                         servidor.CerrarConexion();
                     }
                 }
